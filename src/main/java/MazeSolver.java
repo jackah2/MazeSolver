@@ -11,46 +11,52 @@ public class MazeSolver {
 	/** Delay between moving current piece */
 	private static final int DELAY = 20;
 	
-	/** X dimension of maze */
-	private static int xDim = 60;
-	
-	/** Y dimension of maze */
-	private static int yDim = 30;
-
 	/** Colors used throughout program */
 	private static final Color BACKGROUND_COLOR = new Color(0,0,0);
 	private static final Color WALL_COLOR = new Color(100,100,100);
 	private static final Color CURRENT_COLOR = new Color(0,255,0);
 	private static final Color END_COLOR = new Color(255,0,0);
 	private static final Color SEEN_COLOR = new Color(255,255,255);
-
+	
+	
+	/** X dimension of maze */
+	private int xDim;
+	
+	/** Y dimension of maze */
+	private int yDim;
+	
+	/** Way to solve the maze */
+	private SolveType solveType;
+	
 	/** Creates new maze with given dimensions */
-	private static final Maze maze = new Maze(xDim, yDim);
+	private final Maze maze;
 
 	/**
-	 * Runner for Maze Solver
-	 * @param unused unused
+	 * Create a new maze and see how it's solved.
+	 * @param xDim X Dimension of the maze
+	 * @param yDim Y Dimension of the maze
+	 * @param solveType Method used to solve the maze
 	 */
-	public static void main(String[] unused) {
+	public MazeSolver(final int xDim, final int yDim, final SolveType solveType) {
+		this.solveType = solveType;
+		
+		this.maze = new Maze(xDim, yDim);
 		maze.startAtRandomLocation();
 		maze.endAtRandomLocation();
 
 		// X and Y dimensions of Zen according to how MazeMaker creates its mazes
-		xDim = xDim * SCALE * 2 + SCALE;
-		yDim = yDim * SCALE * 2 + SCALE;
+		this.xDim = xDim * SCALE * 2 + SCALE;
+		this.yDim = yDim * SCALE * 2 + SCALE;
 
 		// Creating the Zen window
-		Zen.create(xDim, yDim);
-
-		displayMaze();
-		displaySolve(SolveType.HUG_LEFT);
+		Zen.create(this.xDim, this.yDim);
 	}
-
+	
 	/**
 	 * Returns a 2d array of characters that makes up the maze.
 	 * @return a 2d String array with the characters of the array
 	 */
-	public static String[][] getMazeArray() {
+	private String[][] getMazeArray() {
 		String mazeStr = maze.toString();
 		String[] rows = mazeStr.split("\n");
 		String[][] result = new String[rows.length][rows[0].length()];
@@ -65,7 +71,7 @@ public class MazeSolver {
 	/**
 	 * Displays the maze in Zen
 	 */
-	private static void displayMaze() {
+	public void displayMaze() {
 		String[][] mazeArr = getMazeArray();
 		String current;
 		int xCoord, yCoord;
@@ -111,7 +117,7 @@ public class MazeSolver {
 	 * Displays the maze being solved using the given solve type.
 	 * @param solveType Way to solve the maze
 	 */
-	private static void displaySolve(SolveType solveType) {
+	public void displaySolve() {
 		// Represents the coordinates where the current piece used to be
 		int seenX, seenY;
 		
@@ -156,7 +162,7 @@ public class MazeSolver {
 	 * Returns a mapped X coordinate from the current maze position to a Zen position
 	 * @return X coordinate for Zen use
 	 */
-	private static int getSolveXScale() {
+	private int getSolveXScale() {
 		return maze.getCurrentLocation().x() * SCALE * 2 + SCALE;
 	}
 	
@@ -164,14 +170,14 @@ public class MazeSolver {
 	 * Returns a mapped Y coordinate from the current maze position to a Zen position
 	 * @return Y coordinate for Zen use
 	 */
-	private static int getSolveYScale() {
+	private int getSolveYScale() {
 		return yDim - (maze.getCurrentLocation().y() * SCALE * 2) - 2 * SCALE;
 	}
 	
 	/**
 	 * Executes the left wall hug solve.
 	 */
-	private static void doHugLeft() {
+	private void doHugLeft() {
 		maze.turnLeft();
         while (!maze.canMove()) {
             maze.turnRight();
@@ -182,7 +188,7 @@ public class MazeSolver {
 	/**
 	 * Executes the right wall hug solve.
 	 */
-	private static void doHugRight() {
+	private void doHugRight() {
 		maze.turnRight();
         while (!maze.canMove()) {
             maze.turnLeft();
@@ -193,14 +199,14 @@ public class MazeSolver {
 	/**
 	 * Executes the recursive solve.
 	 */
-	private static void doRecursive() {
+	private void doRecursive() {
 		return;
 	}
 
 	/**
 	 * Types of solves
 	 */
-	private enum SolveType {
+	public enum SolveType {
 		/** Hugging the right wall. */
 		HUG_RIGHT, 
 		
