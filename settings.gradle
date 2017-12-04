@@ -15,4 +15,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'Maze Solver'
+rootProject.name = 'Maze Solver - Git'
