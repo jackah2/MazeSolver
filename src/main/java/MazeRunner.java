@@ -1,5 +1,4 @@
 
-//TODO: Make this class a runner for MazeSolver
 public class MazeRunner {
 	
 	public static void main(String[] args) {

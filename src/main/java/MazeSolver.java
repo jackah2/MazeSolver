@@ -40,6 +40,7 @@ public class MazeSolver {
 	public MazeSolver(final int xDim, final int yDim, final SolveType solveType) {
 		this.solveType = solveType;
 		
+		// Create a new maze with given dimenions starting and ending at a random location
 		this.maze = new Maze(xDim, yDim);
 		maze.startAtRandomLocation();
 		maze.endAtRandomLocation();
