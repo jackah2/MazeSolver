@@ -12,6 +12,7 @@ public class MazeSolver {
 	private static final int DELAY = 20;
 	
 	/** Colors used throughout program */
+	@SuppressWarnings("unused")
 	private static final Color BACKGROUND_COLOR = new Color(0,0,0);
 	private static final Color WALL_COLOR = new Color(100,100,100);
 	private static final Color CURRENT_COLOR = new Color(0,255,0);
@@ -51,6 +52,14 @@ public class MazeSolver {
 
 		// Creating the Zen window
 		Zen.create(this.xDim, this.yDim);
+	}
+	
+	/**
+	 * Get the saved Maze object
+	 * @return Saved Maze
+	 */
+	public Maze getMaze() {
+		return maze;
 	}
 	
 	/**
@@ -233,6 +242,7 @@ public class MazeSolver {
 	 * Prints a 2d array.
 	 * @param arr Array to print
 	 */
+	@SuppressWarnings("unused")
 	private static void displayArr(String[][] arr) {
 		for (int row = 0; row < arr.length; row++) {
 			for (int col = 0; col < arr[row].length; col++) {
