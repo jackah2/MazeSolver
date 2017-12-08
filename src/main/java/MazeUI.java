@@ -35,14 +35,15 @@ public class MazeUI extends JFrame {
 	private JLabel xDimLabel;
 	private JLabel yDimLabel;
 
-	private JButton generateButton;
+	private JButton actionButton;
 	private JRadioButton huggingRadioButton;
 	private JRadioButton recursiveRadioButton;
 
 	private int xDim = -1, yDim = -1;
 	private boolean validCoords = false;
 	private MazeSolver solver = null;
-
+	
+	// Listener for when actionButton is in its generate state
 	private ActionListener generateListener = new ActionListener() {
 
 		@Override
@@ -55,12 +56,13 @@ public class MazeUI extends JFrame {
 			yDimField.setEnabled(false);
 
 			// Stops listening as a generate button and turns into a solve button
-			generateButton.removeActionListener(this);
-			generateButton.addActionListener(solveListener);
-			generateButton.setText("Solve");
+			actionButton.removeActionListener(this);
+			actionButton.addActionListener(solveListener);
+			actionButton.setText("Solve");
 		}
 	};
 
+	// Listener for when actionButton is in its solve state
 	private ActionListener solveListener = new ActionListener() {
 
 		@Override
@@ -72,12 +74,13 @@ public class MazeUI extends JFrame {
 			solver.displaySolve();
 
 			// Stops listening as a solve button and turns into a reset button
-			generateButton.removeActionListener(this);
-			generateButton.addActionListener(resetListener);
-			generateButton.setText("Reset");
+			actionButton.removeActionListener(this);
+			actionButton.addActionListener(resetListener);
+			actionButton.setText("Reset");
 		}
 	};
 
+	// Listener for when actionButton is in its reset state
 	private ActionListener resetListener = new ActionListener() {
 
 		@Override
@@ -85,9 +88,9 @@ public class MazeUI extends JFrame {
 			solver.resetMaze();
 
 			// Stops listening as a reset button and turns into a solve button
-			generateButton.removeActionListener(this);
-			generateButton.addActionListener(solveListener);
-			generateButton.setText("Solve");
+			actionButton.removeActionListener(this);
+			actionButton.addActionListener(solveListener);
+			actionButton.setText("Solve");
 		}
 	};
 
@@ -122,13 +125,13 @@ public class MazeUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		generateButton = new JButton("Generate");
-		generateButton.setEnabled(false);
-		generateButton.setBounds(257, 21, 146, 187);
-		generateButton.setToolTipText("Set the X and Y dimensions of the maze first!");
-		contentPane.add(generateButton);
+		actionButton = new JButton("Generate");
+		actionButton.setEnabled(false);
+		actionButton.setBounds(257, 21, 146, 187);
+		actionButton.setToolTipText("Set the X and Y dimensions of the maze first!");
+		contentPane.add(actionButton);
 		
-		generateButton.addActionListener(generateListener);
+		actionButton.addActionListener(generateListener);
 		
 
 		recursiveRadioButton = new JRadioButton("Recursive");
@@ -182,27 +185,35 @@ public class MazeUI extends JFrame {
 			xDim = Integer.valueOf(xDimField.getText());
 			yDim = Integer.valueOf(yDimField.getText());
 		} catch (NumberFormatException exc) {
-			generateButton.setEnabled(false);
+			actionButton.setEnabled(false);
 			validCoords = false;
 			return;
 		}
 
 		if (xDim == -1 || yDim == -1) {
-			generateButton.setEnabled(false);
+			actionButton.setEnabled(false);
 			validCoords = false;
 			return;
 		}
 
-		generateButton.setEnabled(true);
+		actionButton.setEnabled(true);
 		validCoords = true;
 	}
 	
+	/**
+	 * Gets the type of solve for the maze depending on the solve type radio buttons.
+	 * @return SolveType depending on what is selected
+	 */
 	private MazeSolver.SolveType getSolveType() {
 		if (huggingRadioButton.isSelected()) return MazeSolver.SolveType.HUG_LEFT;
 		if (recursiveRadioButton.isSelected()) return MazeSolver.SolveType.RECURSIVE;
 		return null;
 	}
 
+	/**
+	 * Sets default size of font for scaling.
+	 * @param size Size to set font
+	 */
 	public static void setDefaultSize(int size) {
 		Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
@@ -218,6 +229,11 @@ public class MazeUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Simpler method for listening for JTextField modifications.
+	 * @param text Component to listen to
+	 * @param changeListener Listener for component
+	 */
 	public static void addChangeListener(JTextComponent text, ChangeListener changeListener) {
 		Objects.requireNonNull(text);
 		Objects.requireNonNull(changeListener);
