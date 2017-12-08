@@ -1,6 +1,8 @@
 import java.awt.Color;
 
 import edu.illinois.cs.cs125.lib.mazemaker.Maze;
+import edu.illinois.cs.cs125.lib.mazemaker.Maze.Location;
+import edu.illinois.cs.cs125.lib.mazemaker.Maze.LocationException;
 import edu.illinois.cs.cs125.lib.zen.Zen;
 
 public class MazeSolver {
@@ -12,7 +14,6 @@ public class MazeSolver {
 	private static final int DELAY = 20;
 	
 	/** Colors used throughout program */
-	@SuppressWarnings("unused")
 	private static final Color BACKGROUND_COLOR = new Color(0,0,0);
 	private static final Color WALL_COLOR = new Color(100,100,100);
 	private static final Color CURRENT_COLOR = new Color(0,255,0);
@@ -31,7 +32,9 @@ public class MazeSolver {
 	
 	/** Creates new maze with given dimensions */
 	private final Maze maze;
-
+	
+	private Location startLocation;
+	
 	/**
 	 * Create a new maze and see how it's solved.
 	 * @param xDim X Dimension of the maze
@@ -45,6 +48,8 @@ public class MazeSolver {
 		this.maze = new Maze(xDim, yDim);
 		maze.startAtRandomLocation();
 		maze.endAtRandomLocation();
+		
+		startLocation = maze.getCurrentLocation();
 
 		// X and Y dimensions of Zen according to how MazeMaker creates its mazes
 		this.xDim = xDim * SCALE * 2 + SCALE;
@@ -76,6 +81,21 @@ public class MazeSolver {
 		}
 
 		return result;
+	}
+	
+	public void resetMaze() {
+		try {
+			maze.startAt(startLocation.x(), startLocation.y());
+		} catch (LocationException e) {
+			e.printStackTrace();
+		}
+		setColor(BACKGROUND_COLOR);
+		Zen.fillRect(0, 0, xDim, yDim);
+		displayMaze();
+	}
+	
+	public void setSolveType(SolveType type) {
+		this.solveType = type;
 	}
 
 	/**
