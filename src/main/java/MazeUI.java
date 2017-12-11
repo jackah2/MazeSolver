@@ -27,6 +27,14 @@ public class MazeUI extends JFrame {
 
 	private static final long serialVersionUID = 9060988509795832926L;
 
+	private static final int XDIM_MIN = 5;
+	private static final int XDIM_MAX = 40;
+	private static final int YDIM_MIN = 5;
+	private static final int YDIM_MAX = 40;
+	
+	private static final int SCALE_MIN = 5;
+	private static final int SCALE_MAX = 20;
+	
 	private JPanel contentPane;
 
 	private JTextField xDimField;
@@ -40,6 +48,7 @@ public class MazeUI extends JFrame {
 	private JRadioButton recursiveRadioButton;
 
 	private int xDim = -1, yDim = -1;
+	private int scale = 20;
 	private boolean validCoords = false;
 	private MazeSolver solver = null;
 	
@@ -49,7 +58,7 @@ public class MazeUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!validCoords) return;
-			solver = new MazeSolver(xDim, yDim, getSolveType());
+			solver = new MazeSolver(xDim, yDim, getSolveType(), scale);
 			solver.displayMaze();
 
 			xDimField.setEnabled(false);
@@ -93,6 +102,7 @@ public class MazeUI extends JFrame {
 			actionButton.setText("Solve");
 		}
 	};
+	private JTextField scaleField;
 
 	/**
 	 * Launch the application.
@@ -156,14 +166,27 @@ public class MazeUI extends JFrame {
 		contentPane.add(yDimLabel);
 
 		xDimField = new JTextField();
+		xDimField.setToolTipText("Value " + XDIM_MIN + " - " + XDIM_MAX);
 		xDimField.setBounds(40, 7, 186, 32);
 		contentPane.add(xDimField);
 		xDimField.setColumns(10);
 
 		yDimField = new JTextField();
+		yDimField.setToolTipText("Value " + YDIM_MIN + " - " + YDIM_MAX);
 		yDimField.setBounds(40, 54, 186, 32);
 		contentPane.add(yDimField);
 		yDimField.setColumns(10);
+		
+		JLabel scaleLabel = new JLabel("Scale: ");
+		scaleLabel.setBounds(10, 101, 97, 26);
+		contentPane.add(scaleLabel);
+		
+		scaleField = new JTextField();
+		scaleField.setToolTipText("Value " + SCALE_MIN + " - " + SCALE_MAX);
+		scaleField.setText("20");
+		scaleField.setBounds(90, 98, 137, 32);
+		contentPane.add(scaleField);
+		scaleField.setColumns(10);
 
 		ChangeListener dimListener = new ChangeListener() {
 			@Override
@@ -174,6 +197,8 @@ public class MazeUI extends JFrame {
 
 		addChangeListener(xDimField, dimListener);
 		addChangeListener(yDimField, dimListener);
+		addChangeListener(scaleField, dimListener);
+		
 	}
 
 	/**
@@ -184,13 +209,16 @@ public class MazeUI extends JFrame {
 		try {
 			xDim = Integer.valueOf(xDimField.getText());
 			yDim = Integer.valueOf(yDimField.getText());
+			scale = Integer.valueOf(scaleField.getText());
 		} catch (NumberFormatException exc) {
 			actionButton.setEnabled(false);
 			validCoords = false;
 			return;
 		}
 
-		if (xDim == -1 || yDim == -1) {
+		if (xDim < XDIM_MIN || yDim < YDIM_MIN || 
+				xDim > XDIM_MAX || yDim > YDIM_MAX ||
+				scale < SCALE_MIN || scale > SCALE_MAX) {
 			actionButton.setEnabled(false);
 			validCoords = false;
 			return;

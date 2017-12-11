@@ -8,7 +8,7 @@ import edu.illinois.cs.cs125.lib.zen.Zen;
 public class MazeSolver {
 
 	/** Scale to display maze pieces */
-	private static final int SCALE = 20;
+	private static int SCALE = 20;
 	
 	/** Delay between moving current piece */
 	private static final int DELAY = 20;
@@ -41,7 +41,9 @@ public class MazeSolver {
 	 * @param yDim Y Dimension of the maze
 	 * @param solveType Method used to solve the maze
 	 */
-	public MazeSolver(final int xDim, final int yDim, final SolveType solveType) {
+	public MazeSolver(final int xDim, final int yDim, final SolveType solveType, final int scale) {
+		SCALE = scale;
+		
 		this.solveType = solveType;
 		
 		// Create a new maze with given dimenions starting and ending at a random location
