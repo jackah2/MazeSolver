@@ -44,8 +44,8 @@ public class MazeUI extends JFrame {
 	private JLabel yDimLabel;
 
 	private JButton actionButton;
-	private JRadioButton huggingRadioButton;
-	private JRadioButton recursiveRadioButton;
+	//private JRadioButton huggingRadioButton;
+	//private JRadioButton recursiveRadioButton;
 
 	private int xDim = -1, yDim = -1;
 	private int scale = 20;
@@ -144,18 +144,18 @@ public class MazeUI extends JFrame {
 		actionButton.addActionListener(generateListener);
 		
 
-		recursiveRadioButton = new JRadioButton("Recursive");
-		recursiveRadioButton.setBounds(0, 194, 201, 35);
-		contentPane.add(recursiveRadioButton);
-
-		huggingRadioButton = new JRadioButton("Hugging Wall");
-		huggingRadioButton.setSelected(true);
-		huggingRadioButton.setBounds(0, 159, 201, 35);
-		contentPane.add(huggingRadioButton);
-
-		ButtonGroup group = new ButtonGroup();
-		group.add(recursiveRadioButton);
-		group.add(huggingRadioButton);
+//		recursiveRadioButton = new JRadioButton("Recursive");
+//		recursiveRadioButton.setBounds(0, 194, 201, 35);
+//		contentPane.add(recursiveRadioButton);
+//
+//		huggingRadioButton = new JRadioButton("Hugging Wall");
+//		huggingRadioButton.setSelected(true);
+//		huggingRadioButton.setBounds(0, 159, 201, 35);
+//		contentPane.add(huggingRadioButton);
+//
+//		ButtonGroup group = new ButtonGroup();
+//		group.add(recursiveRadioButton);
+//		group.add(huggingRadioButton);
 
 		xDimLabel = new JLabel("X:");
 		xDimLabel.setBounds(10, 10, 30, 26);
@@ -233,9 +233,9 @@ public class MazeUI extends JFrame {
 	 * @return SolveType depending on what is selected
 	 */
 	private MazeSolver.SolveType getSolveType() {
-		if (huggingRadioButton.isSelected()) return MazeSolver.SolveType.HUG_LEFT;
-		if (recursiveRadioButton.isSelected()) return MazeSolver.SolveType.RECURSIVE;
-		return null;
+//		if (huggingRadioButton.isSelected()) return MazeSolver.SolveType.HUG_LEFT;
+//		if (recursiveRadioButton.isSelected()) return MazeSolver.SolveType.RECURSIVE;
+		return MazeSolver.SolveType.HUG_LEFT;
 	}
 
 	/**
